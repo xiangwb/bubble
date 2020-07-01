@@ -1,0 +1,9 @@
+FLASK_ENV=development
+FLASK_APP=bubble.app:create_app
+SECRET_KEY=changeme
+DATABASE_URI=mongodb://localhost:27017/bubble
+CELERY_BROKER_URL=redis://localhost:6379/1
+CELERY_RESULT_BACKEND_URL=redis://localhost:6379/2
+DEFAULT_LOG_DIR=
+DEFAULT_LOG_FILE=
+ELASTICSEARCH_URL=http://127.0.0.1:9200
