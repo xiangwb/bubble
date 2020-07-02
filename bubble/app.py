@@ -2,10 +2,9 @@ from flask import Flask
 
 from flask_admin import Admin
 from flask_admin.contrib.mongoengine import ModelView
-from bubble.extensions import jwt, db, apispec, logger, celery, limiter
+from bubble.extensions import db, apispec, logger, celery, limiter
 from bubble.models import Subject, Item
 from bubble.request_handler import register_error_handler
-from elasticsearch import Elasticsearch
 
 
 def create_app(testing=False, cli=False):
@@ -41,7 +40,7 @@ def configure_extensions(app, cli):
         }
 
     db.init_app(app)
-    jwt.init_app(app)
+    # jwt.init_app(app)
     limiter.init_app(app)
     logger.init_loggers(app)
     # app.es = Elasticsearch(app.config['ELASTICSEARCH_URL'])
@@ -109,10 +108,8 @@ def init_celery(app=None):
     return celery
 
 
-
 def init_admin(app=None):
     app = app or create_app()
     admin = Admin(app, name='bubble', template_mode='bootstrap3')
     admin.add_view(ModelView(Subject))
     admin.add_view(ModelView(Item))
-
