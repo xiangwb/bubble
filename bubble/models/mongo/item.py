@@ -65,7 +65,7 @@ class Item(CommonDocument, SearchableMixin):
     question = mg.StringField(required=True)
     answer = mg.StringField(required=False)
     refer = mg.StringField(default=True)
-    tag = mg.ListField(mg.EmbeddedDocument(Tag))
+    tag = mg.ListField(mg.ReferenceField(Tag))
     subject_id = mg.ReferenceField(Subject, reverse_delete_rule=mg.CASCADE)
 
     # __searchable__ = ['username', 'email']  # 定义需要es搜索的字段，不定义则不需要es搜索功能
