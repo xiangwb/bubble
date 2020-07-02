@@ -34,7 +34,7 @@ class Subject(CommonDocument, SearchableMixin):
     课程模型
     """
     name = mg.StringField(required=True, max_length=100, unique=True)
-    category = mg.ListField(mg.EmbeddedDocument(SubjectCategory))
+    category = mg.ListField(mg.ReferenceField(SubjectCategory))
     desc = mg.StringField(required=True)
 
     def __repr__(self):
