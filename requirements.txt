@@ -22,3 +22,4 @@ Cython==0.29.17
 Flask-Limiter==1.2.1
 elasticsearch==7.6.0
 blinker==1.4
+flask-admin==1.5.6
