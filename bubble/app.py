@@ -3,7 +3,7 @@ from flask import Flask
 from flask_admin import Admin
 from flask_admin.contrib.mongoengine import ModelView
 from bubble.extensions import db, apispec, logger, celery, limiter
-from bubble.models import Subject, Item
+from bubble.models import Subject, Item, SubjectCategory, Tag
 from bubble.request_handler import register_error_handler
 
 
@@ -111,5 +111,7 @@ def init_celery(app=None):
 def init_admin(app=None):
     app = app or create_app()
     admin = Admin(app, name='bubble', template_mode='bootstrap3')
+    admin.add_view(ModelView(SubjectCategory))
+    admin.add_view(ModelView(Tag))
     admin.add_view(ModelView(Subject))
     admin.add_view(ModelView(Item))
