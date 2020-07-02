@@ -1,7 +1,9 @@
 from flask import Flask
 
-from bubble import auth, api
+from flask_admin import Admin
+from flask_admin.contrib.mongoengine import ModelView
 from bubble.extensions import jwt, db, apispec, logger, celery, limiter
+from bubble.models import Subject, Item
 from bubble.request_handler import register_error_handler
 from elasticsearch import Elasticsearch
 
@@ -18,8 +20,9 @@ def create_app(testing=False, cli=False):
     configure_extensions(app, cli)
     configure_apispec(app)
     register_request_handler(app)
-    register_blueprints(app)
+    # register_blueprints(app)
     init_celery(app)
+    init_admin(app)
 
     return app
 
@@ -41,7 +44,7 @@ def configure_extensions(app, cli):
     jwt.init_app(app)
     limiter.init_app(app)
     logger.init_loggers(app)
-    app.es = Elasticsearch(app.config['ELASTICSEARCH_URL'])
+    # app.es = Elasticsearch(app.config['ELASTICSEARCH_URL'])
 
 
 def configure_apispec(app):
@@ -67,8 +70,9 @@ def configure_apispec(app):
 def register_blueprints(app):
     """register all blueprints for application
     """
-    app.register_blueprint(auth.views.blueprint)
-    app.register_blueprint(api.views.blueprint)
+    # app.register_blueprint(auth.views.blueprint)
+    # app.register_blueprint(api.views.blueprint)
+    pass
 
 
 def register_request_handler(app):
@@ -103,3 +107,12 @@ def init_celery(app=None):
 
     celery.Task = ContextTask
     return celery
+
+
+
+def init_admin(app=None):
+    app = app or create_app()
+    admin = Admin(app, name='bubble', template_mode='bootstrap3')
+    admin.add_view(ModelView(Subject))
+    admin.add_view(ModelView(Item))
+

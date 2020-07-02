@@ -60,7 +60,6 @@ build_files = [
     'apps/auth/helpers.py',
     'apps/auth/views.py',
     'apps/models/mongo/user.py',
-    'apps/models/mongo/blacklist.py',
     'apps/api/views.py',
     'apps/api/resources/user.py',
 ]
