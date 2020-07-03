@@ -1,10 +1,10 @@
 from mongoengine import signals
 
-from bubble.models.mongo import CommonDocument, SearchableMixin
+from bubble.models.mongo import CommonDocument
 import mongoengine as mg
 
 
-class SubjectCategory(CommonDocument, SearchableMixin):
+class SubjectCategory(CommonDocument):
     """
     课程分类模型：树形结构
     """
@@ -29,7 +29,7 @@ class SubjectCategory(CommonDocument, SearchableMixin):
 signals.pre_save.connect(SubjectCategory.pre_save, sender=SubjectCategory)
 
 
-class Subject(CommonDocument, SearchableMixin):
+class Subject(CommonDocument):
     """
     课程模型
     """
@@ -44,7 +44,7 @@ class Subject(CommonDocument, SearchableMixin):
         return "{}".format(self.name)
 
 
-class Tag(CommonDocument, SearchableMixin):
+class Tag(CommonDocument):
     """
     问题标签
     """
@@ -57,7 +57,7 @@ class Tag(CommonDocument, SearchableMixin):
         return "{}".format(self.name)
 
 
-class Item(CommonDocument, SearchableMixin):
+class Item(CommonDocument):
     """
     问题条目
     """
