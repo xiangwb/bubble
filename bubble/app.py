@@ -3,9 +3,13 @@ from flask import Flask
 from flask_admin import Admin
 from flask_admin.contrib.mongoengine import ModelView
 from bubble.extensions import db, apispec, logger, celery, limiter
+from bubble.loggers import get_logger
 from bubble.models import Subject, Item, SubjectCategory, Tag
 from bubble.request_handler import register_error_handler
 from bubble import api
+
+log = get_logger('app', 'app')
+
 
 def create_app(testing=False, cli=False):
     """Application factory, used to create application
@@ -22,8 +26,8 @@ def create_app(testing=False, cli=False):
     # register_blueprints(app)
     init_celery(app)
     init_admin(app)
-    logger.debug("url列表")
-    logger.debug(app.url_map)
+    log.debug("url列表")
+    log.debug(app.url_map)
 
     return app
 
