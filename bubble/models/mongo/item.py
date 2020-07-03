@@ -25,6 +25,10 @@ class SubjectCategory(CommonDocument):
         else:
             document.path = '{}/{}'.format(document.parent.path, document.parent.name)
 
+    meta = {
+        'indexes': [('name', 'parent'), ]
+    }
+
 
 signals.pre_save.connect(SubjectCategory.pre_save, sender=SubjectCategory)
 
