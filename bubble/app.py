@@ -23,7 +23,7 @@ def create_app(testing=False, cli=False):
     configure_extensions(app, cli)
     configure_apispec(app)
     register_request_handler(app)
-    # register_blueprints(app)
+    register_blueprints(app)
     init_celery(app)
     init_admin(app)
     log.debug("url列表")
