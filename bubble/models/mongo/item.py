@@ -25,8 +25,9 @@ class SubjectCategory(CommonDocument):
         else:
             # document.path = '{}/{}'.format(document.parent.path, document.parent.name)
             parent = document.parent
+            document.path = ''
             while parent:
-                document.path = parent.path + parent.name
+                document.path = document.path + parent.path + '/' + parent.name
                 parent = parent.parent
 
     meta = {
