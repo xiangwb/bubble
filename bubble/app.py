@@ -5,7 +5,7 @@ from flask_admin.contrib.mongoengine import ModelView
 from bubble.extensions import db, apispec, logger, celery, limiter
 from bubble.models import Subject, Item, SubjectCategory, Tag
 from bubble.request_handler import register_error_handler
-
+from bubble import api
 
 def create_app(testing=False, cli=False):
     """Application factory, used to create application
@@ -69,9 +69,9 @@ def configure_apispec(app):
 def register_blueprints(app):
     """register all blueprints for application
     """
-    # app.register_blueprint(auth.views.blueprint)
+    app.register_blueprint(api.urls.blueprint)
     # app.register_blueprint(api.views.blueprint)
-    pass
+    # pass
 
 
 def register_request_handler(app):

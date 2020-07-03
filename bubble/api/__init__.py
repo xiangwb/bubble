@@ -1,3 +1,3 @@
-from bubble.api import views
+from bubble.api import resource, schema, urls
 
-__all__ = ["views"]
+__all__ = ["urls", "schema", "resource"]
