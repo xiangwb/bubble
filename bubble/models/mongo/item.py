@@ -23,7 +23,11 @@ class SubjectCategory(CommonDocument):
         if document.parent is None:
             document.path = '/'
         else:
-            document.path = '{}/{}'.format(document.parent.path, document.parent.name)
+            # document.path = '{}/{}'.format(document.parent.path, document.parent.name)
+            parent = document.parent
+            while parent:
+                document.path = parent.path + parent.name
+                parent = parent.parent
 
     meta = {
         'indexes': [{'fields': ['name', 'path'], 'unique': True}, ]
