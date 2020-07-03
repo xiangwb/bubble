@@ -17,7 +17,7 @@ from datetime import datetime
 
 from bson import ObjectId
 from mongoengine import QuerySet, Document, BooleanField, DateTimeField, StringField, signals
-from bubble.search import add_to_index, remove_from_index
+# from bubble.search import add_to_index, remove_from_index
 
 
 class ValidQuerySet(QuerySet):
@@ -68,14 +68,14 @@ def post_save(sender, document, **kwargs):
     # FIXME: 配合软删得做一些额外的工作
     doc_col = document.__class__.__dict__['_meta']['collection']
     # 插入数据到es
-    add_to_index(doc_col, document)
+    # add_to_index(doc_col, document)
 
 
 def post_delete(sender, document, **kwargs):
     """ 在 删除 方法执行之后执行 """
     doc_col = document.__class__.__dict__['_meta']['collection']
     # 删除es的数据
-    remove_from_index(doc_col, document)
+    # remove_from_index(doc_col, document)
 
 
 def post_bulk_insert(sender, documents, **kwargs):
@@ -83,12 +83,12 @@ def post_bulk_insert(sender, documents, **kwargs):
     pass
 
 
-class SearchableMixin(object):
-
-    @classmethod
-    def reindex(cls):
-        for obj in cls.objects.filter(is_deleted=False):
-            add_to_index(cls.__dict__['_meta']['collection'], obj)
+# class SearchableMixin(object):
+#
+#     @classmethod
+#     def reindex(cls):
+#         for obj in cls.objects.filter(is_deleted=False):
+#             add_to_index(cls.__dict__['_meta']['collection'], obj)
 
 
 # 注册信号
