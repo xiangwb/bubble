@@ -22,6 +22,8 @@ def create_app(testing=False, cli=False):
     # register_blueprints(app)
     init_celery(app)
     init_admin(app)
+    logger.debug("url列表")
+    logger.debug(app.url_map)
 
     return app
 

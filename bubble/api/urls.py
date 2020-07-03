@@ -17,7 +17,7 @@ api.add_resource(SubjectCategoryListResource, "/subject-category/")
 
 @blueprint.before_app_first_request
 def register_views():
-    apispec.spec.components.schema("UserSchema", schema=SubjectCategorySchema)
+    apispec.spec.components.schema("SubjectCategorySchema", schema=SubjectCategorySchema)
     apispec.spec.path(view=SubjectCategoryResource, app=current_app)
     apispec.spec.path(view=SubjectCategoryListResource, app=current_app)
 
