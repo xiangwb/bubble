@@ -26,7 +26,7 @@ class SubjectCategory(CommonDocument):
             document.path = '{}/{}'.format(document.parent.path, document.parent.name)
 
     meta = {
-        'indexes': [('name', 'parent'), ]
+        'indexes': [('name', 'path'), ]
     }
 
 
