@@ -12,7 +12,7 @@ api = Api(blueprint)
 
 
 api.add_resource(SubjectCategoryResource, "/subject-category/<string:_id>")
-api.add_resource(SubjectCategoryListResource, "/users/")
+api.add_resource(SubjectCategoryListResource, "/subject-category/")
 
 
 @blueprint.before_app_first_request
