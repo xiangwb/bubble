@@ -12,11 +12,19 @@ services:
 #      - DATABASE_URI=mongodb://localhost:27017/bubble
 #      - CELERY_BROKER_URL=redis://localhost:6379/1
 #      - CELERY_RESULT_BACKEND_URL=redis://localhost:6379/2
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=bubble_infrastructure_bubble"
+      - "traefik.http.services.service0.loadbalancer.server.port=5001"
+      - "traefik.http.routers.apw.rule=PathPrefix(`/api/v1/bubble`)"
+      - "traefik.http.middlewares.flask.forwardauth.address=http://192.168.112.128/api/v1/user_center/auth/"
+      - "traefik.http.middlewares.flask.forwardauth.authResponseHeaders=X-Auth-User-Id, X-Auth-User-Name"
+      - "traefik.http.routers.flask.middlewares=flask@docker"
     volumes:
       - ./bubble:/code/bubble
       - ./db/:/db/
     ports:
-      - "5000:5000"
+      - "5001:5001"
   redis:
     image: redis
   celery:

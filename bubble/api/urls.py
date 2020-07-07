@@ -7,7 +7,7 @@ from bubble.api.resource import SubjectCategoryListResource, SubjectCategoryReso
 from bubble.api.schema import SubjectCategorySchema
 
 
-blueprint = Blueprint("api", __name__, url_prefix="/api/v1")
+blueprint = Blueprint("api", __name__, url_prefix="/api/v1/bubble")
 api = Api(blueprint)
 
 

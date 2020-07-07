@@ -17,4 +17,4 @@ RUN pip install -e .
 
 COPY bubble bubble/
 
-EXPOSE 5000
+EXPOSE 5001

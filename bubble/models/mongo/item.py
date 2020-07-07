@@ -40,6 +40,7 @@ class Subject(CommonDocument):
     课程模型
     """
     name = mg.StringField(required=True, max_length=100, unique=True)
+    creator = mg.DictField()
     category = mg.ListField(mg.ReferenceField(SubjectCategory))
     desc = mg.StringField(required=True)
 
