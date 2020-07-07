@@ -25,8 +25,8 @@ services:
       - ./db/:/db/
     ports:
       - "5001:5001"
-  redis:
-    image: redis
+#  redis:
+#    image: redis
   celery:
     image: bubble
     command: "celery worker -A bubble.celery_app:app"
@@ -34,5 +34,5 @@ services:
       - ./.envs/.local/.flask
     volumes:
       - .:/code
-    depends_on:
-      - redis
+#    depends_on:
+#      - redis
