@@ -19,7 +19,7 @@ services:
       - "traefik.http.routers.apw.rule=PathPrefix(`/api/v1/bubble`)"
       - "traefik.http.middlewares.flask.forwardauth.address=http://192.168.112.128/api/v1/user_center/auth/"
       - "traefik.http.middlewares.flask.forwardauth.authResponseHeaders=X-Auth-User-Id, X-Auth-User-Name"
-      - "traefik.http.routers.flask.middlewares=flask@docker"
+      - "traefik.http.routers.flask.middlewares=bubble@flask@docker"
     volumes:
       - ./bubble:/code/bubble
       - ./db/:/db/
