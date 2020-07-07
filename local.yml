@@ -5,7 +5,7 @@ services:
   web:
     image: bubble
     build: .
-    command: gunicorn -b 0.0.0.0:5000 bubble.wsgi:app
+    command: gunicorn -b 0.0.0.0:5001 bubble.wsgi:app
     env_file:
       - ./.envs/.local/.flask
 #    environment:
