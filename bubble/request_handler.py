@@ -121,6 +121,25 @@ def handle_429(e):
     return format_response(str(e), 'Too many requests', 429)
 
 
+
+def handle_500(e):
+    """捕获abort(429)频率限制错误"""
+    traceback.print_exc()
+    logger.api_logger.error(traceback.format_exc())
+    # rsp = {
+    #     'msg': 'Too Many Requests',
+    #     'err': 30
+    # }
+    # err_info = {
+    #     'msg': 'Too many requests',
+    #     'ip': request.remote_addr,
+    #     'url': request.url,
+    #     'method': request.method,
+    # }
+    # logger.api_logger.error(err_info)
+    # return jsonify(**rsp), 429
+    return format_response(str(e), 'server error', 500)
+
 def handle_exception(e):
     """Called when exception occurred"""
     traceback.print_exc()
