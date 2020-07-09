@@ -25,6 +25,7 @@ def register_error_handler(app):
     app.register_error_handler(404, handle_404)
     app.register_error_handler(405, handle_405)
     app.register_error_handler(429, handle_429)
+    app.register_error_handler(500, handle_500)
     app.register_error_handler(Exception, handle_exception)
 
 
@@ -41,7 +42,7 @@ def handle_400(e):
     # if isinstance(e.description, dict):
     #     rsp.update(e.description)
     # # return jsonify(**rsp), 400
-    return format_response(str(e), 'bad request', 400)
+    return format_response(str(e), 'bad request', 400), 400
 
 
 def handle_401(e):
@@ -57,7 +58,7 @@ def handle_401(e):
     # elif isinstance(e.description, dict):
     #     rsp.update(e.description)
     # return jsonify(**rsp), 401
-    return format_response(str(e), 'Unauthorized', 401)
+    return format_response(str(e), 'Unauthorized', 401), 401
 
 
 def handle_403(e):
@@ -73,7 +74,7 @@ def handle_403(e):
     # if isinstance(e.description, dict):
     #     rsp.update(e.description)
     # return jsonify(**rsp), 403
-    return format_response(str(e), 'Forbidden', 403)
+    return format_response(str(e), 'Forbidden', 403), 403
 
 
 def handle_404(e):
@@ -87,7 +88,7 @@ def handle_404(e):
     # if isinstance(e.description, dict):
     #     rsp.update(e.description)
     # return jsonify(**rsp), 404
-    return format_response(str(e), 'Not Found', 404)
+    return format_response(str(e), 'Not Found', 404), 404
 
 
 def handle_405(e):
@@ -99,7 +100,7 @@ def handle_405(e):
     #     'err': 60
     # }
     # return jsonify(**rsp), 405
-    return format_response(str(e), 'Method not allowed', 405)
+    return format_response(str(e), 'Method not allowed', 405), 405
 
 
 def handle_429(e):
@@ -118,12 +119,11 @@ def handle_429(e):
     # }
     # logger.api_logger.error(err_info)
     # return jsonify(**rsp), 429
-    return format_response(str(e), 'Too many requests', 429)
-
+    return format_response(str(e), 'Too many requests', 429), 429
 
 
 def handle_500(e):
-    """捕获abort(429)频率限制错误"""
+    """捕获500错误"""
     traceback.print_exc()
     logger.api_logger.error(traceback.format_exc())
     # rsp = {
@@ -138,11 +138,12 @@ def handle_500(e):
     # }
     # logger.api_logger.error(err_info)
     # return jsonify(**rsp), 429
-    return format_response(str(e), 'server error', 500)
+    return format_response(str(e), 'server error', 500), 500
+
 
 def handle_exception(e):
     """Called when exception occurred"""
     traceback.print_exc()
     logger.api_logger.error(traceback.format_exc())
     # return jsonify(str(e)), 500
-    return format_response(str(e), 'server error', 429)
+    return format_response(str(e), 'server error', 500), 500
