@@ -113,6 +113,8 @@ class SubjectListResource(Resource):
     def post(self):
         try:
             schema = SubjectSchema()
+            headers = request.headers
+            logger.api_logger.info(headers)
             data = schema.load(request.json)
             subject = Subject.objects.create(**data)
             # return {"msg": "user created", "user": schema.dump(user)}, 201
