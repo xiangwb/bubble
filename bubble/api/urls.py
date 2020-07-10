@@ -3,16 +3,17 @@ from flask_restful import Api
 from marshmallow import ValidationError
 
 from bubble.extensions import apispec
-from bubble.api.resource import SubjectCategoryListResource, SubjectCategoryResource
+from bubble.api.resource import SubjectCategoryListResource, SubjectCategoryResource, SubjectResource, \
+    SubjectListResource
 from bubble.api.schema import SubjectCategorySchema
-
 
 blueprint = Blueprint("api", __name__, url_prefix="/api/v1/bubble")
 api = Api(blueprint)
 
-
-api.add_resource(SubjectCategoryResource, "/subject-category/<string:_id>")
+api.add_resource(SubjectCategoryResource, "/subject-category/<string:_id>/")
 api.add_resource(SubjectCategoryListResource, "/subject-category/")
+api.add_resource(SubjectResource, "/subject/<string:_id>/")
+api.add_resource(SubjectListResource, "/subject/")
 
 
 @blueprint.before_app_first_request
