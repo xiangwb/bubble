@@ -123,12 +123,12 @@ class SubjectListResource(Resource):
             logger.api_logger.error(traceback.format_exc())
             # abort(403, {'msg': '手机号码已存在'})
             return format_response('', 'param error', 400), 400
-        except mg.errors.NotUniqueError:
+        except mg.errors.NotUniqueError as e:
             import traceback
             traceback.print_exc()
             logger.api_logger.error(traceback.format_exc())
             # abort(403, {'msg': '手机号码已存在'})
-            return format_response('', 'subject exists', 400), 400
+            return format_response(e.args, 'subject exists', 400), 400
         except Exception as e:
             # abort(500, {"msg": e.args})
             import traceback
