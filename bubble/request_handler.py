@@ -88,8 +88,7 @@ def handle_404(e):
     # if isinstance(e.description, dict):
     #     rsp.update(e.description)
     # return jsonify(**rsp), 404
-    logger.api_logger.error("url not found")
-    return format_response(str(e), 'Not Found', 404)
+    return format_response(str(e), 'Not Found', 404), 200
 
 
 def handle_405(e):
