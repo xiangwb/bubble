@@ -117,12 +117,12 @@ class SubjectListResource(Resource):
             subject = Subject.objects.create(**data)
             # return {"msg": "user created", "user": schema.dump(user)}, 201
             return format_response(schema.dump(subject), 'subject  created', 201), 201
-        except marshmallow.exceptions.ValidationError:
+        except marshmallow.exceptions.ValidationError as e:
             import traceback
             traceback.print_exc()
             logger.api_logger.error(traceback.format_exc())
             # abort(403, {'msg': '手机号码已存在'})
-            return format_response('', 'param error', 400), 400
+            return format_response(e.args, 'param error', 400), 400
         except mg.errors.NotUniqueError as e:
             import traceback
             traceback.print_exc()
