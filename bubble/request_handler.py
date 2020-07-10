@@ -14,6 +14,8 @@
 """
 import traceback
 
+from flask import jsonify
+
 from bubble.extensions import logger
 from bubble.utils.response import format_response
 
@@ -89,7 +91,7 @@ def handle_404(e):
     #     rsp.update(e.description)
     # return jsonify(**rsp), 404
     logger.api_logger.info("url not found")
-    return format_response(str(e), 'Not Found', 404), 404
+    return jsonify(format_response(str(e), 'Not Found', 404)), 404
 
 
 def handle_405(e):
