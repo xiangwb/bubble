@@ -44,7 +44,7 @@ def handle_400(e):
     # if isinstance(e.description, dict):
     #     rsp.update(e.description)
     # # return jsonify(**rsp), 400
-    return format_response(str(e), 'bad request', 400), 400
+    return jsonify(format_response(str(e), 'bad request', 400)), 400
 
 
 def handle_401(e):
@@ -60,7 +60,7 @@ def handle_401(e):
     # elif isinstance(e.description, dict):
     #     rsp.update(e.description)
     # return jsonify(**rsp), 401
-    return format_response(str(e), 'Unauthorized', 401), 401
+    return jsonify(format_response(str(e), 'Unauthorized', 401)), 401
 
 
 def handle_403(e):
@@ -76,7 +76,7 @@ def handle_403(e):
     # if isinstance(e.description, dict):
     #     rsp.update(e.description)
     # return jsonify(**rsp), 403
-    return format_response(str(e), 'Forbidden', 403), 403
+    return jsonify(format_response(str(e), 'Forbidden', 403)), 403
 
 
 def handle_404(e):
@@ -103,7 +103,7 @@ def handle_405(e):
     #     'err': 60
     # }
     # return jsonify(**rsp), 405
-    return format_response(str(e), 'Method not allowed', 405), 405
+    return jsonify(format_response(str(e), 'Method not allowed', 405)), 405
 
 
 def handle_429(e):
@@ -122,7 +122,7 @@ def handle_429(e):
     # }
     # logger.api_logger.error(err_info)
     # return jsonify(**rsp), 429
-    return format_response(str(e), 'Too many requests', 429), 429
+    return jsonify(format_response(str(e), 'Too many requests', 429)), 429
 
 
 def handle_500(e):
@@ -142,7 +142,7 @@ def handle_500(e):
     # logger.api_logger.error(err_info)
     # return jsonify(**rsp), 429
     logger.api_logger.info("500")
-    return format_response(str(e), 'server error', 500), 500
+    return jsonify(format_response(str(e), 'server error', 500)), 500
 
 
 def handle_exception(e):
@@ -151,4 +151,4 @@ def handle_exception(e):
     logger.api_logger.error(traceback.format_exc())
     # return jsonify(str(e)), 500
     logger.api_logger.info("exception")
-    return format_response(str(e), 'server error', 500), 500
+    return jsonify(format_response(str(e), 'server error', 500)), 500
