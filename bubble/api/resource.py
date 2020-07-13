@@ -116,6 +116,10 @@ class SubjectListResource(Resource):
             headers = request.headers
             logger.api_logger.info(headers)
             data = schema.load(request.json)
+            creator_id = headers.get('X-Auth-User-Id')
+            if not creator_id:
+                return format_response("no response header X-Auth-User-Id", 'server error', 500), 500
+            data['creator_id'] = creator_id
             subject = Subject.objects.create(**data)
             # return {"msg": "user created", "user": schema.dump(user)}, 201
             return format_response(schema.dump(subject), 'subject  created', 201), 201
