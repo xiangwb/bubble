@@ -122,6 +122,7 @@ class SubjectListResource(Resource):
             data['creator_id'] = creator_id
             subject = Subject.objects.create(**data)
             # return {"msg": "user created", "user": schema.dump(user)}, 201
+            subject.category_show = [SubjectCategory.objects.get(id=id).name for id in subject.category]
             return format_response(schema.dump(subject), 'subject  created', 201), 201
         except marshmallow.exceptions.ValidationError as e:
             import traceback
