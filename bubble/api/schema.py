@@ -11,7 +11,7 @@ class SubjectCategorySchema(ma.Schema):
 
 class SubjectSchema(ma.Schema):
     id = ma.String(dump_only=True)
-    creator_id = ma.Dict(required=True)
+    creator_id = ma.String(dump_only=True)
     category = ma.List(ma.String, load_only=True)
     category_show = ma.List(ma.String, dump_only=True)
     name = ma.String(required=True)
