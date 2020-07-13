@@ -14,10 +14,10 @@ services:
     command: gunicorn -b 0.0.0.0:5001 bubble.wsgi:app
     env_file:
       - ./.envs/.local/.flask
-#    environment:
-#      - DATABASE_URI=mongodb://localhost:27017/bubble
-#      - CELERY_BROKER_URL=redis://localhost:6379/1
-#      - CELERY_RESULT_BACKEND_URL=redis://localhost:6379/2
+    #    environment:
+    #      - DATABASE_URI=mongodb://localhost:27017/bubble
+    #      - CELERY_BROKER_URL=redis://localhost:6379/1
+    #      - CELERY_RESULT_BACKEND_URL=redis://localhost:6379/2
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=bubble"
@@ -36,6 +36,9 @@ services:
       - public
   redis:
     image: redis
+  networks:
+    - private
+    - public
   celery:
     image: bubble
     command: "celery worker -A bubble.celery_app:app"
