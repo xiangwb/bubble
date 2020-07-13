@@ -1,4 +1,5 @@
 import marshmallow
+import pysnooper
 from flask import request
 from flask_restful import Resource
 import mongoengine as mg
@@ -110,6 +111,7 @@ class SubjectListResource(Resource):
         except Exception as e:
             return format_response(e.args, 'get subject list failure', 500), 500
 
+    @pysnooper.snoop()
     def post(self):
         try:
             schema = SubjectSchema()
