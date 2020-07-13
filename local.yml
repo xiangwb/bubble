@@ -34,8 +34,8 @@ services:
     networks:
       - private
       - public
-#  redis:
-#    image: redis
+  redis:
+    image: redis
   celery:
     image: bubble
     command: "celery worker -A bubble.celery_app:app"
@@ -46,6 +46,6 @@ services:
     networks:
       - private
       - public
-#    depends_on:
-#      - redis
+    depends_on:
+      - redis
 
