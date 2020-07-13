@@ -1,6 +1,12 @@
 # WARNING: this file is not suitable for production, please use with caution
 version: '3'
 
+networks:
+  private:
+  public:
+    external:
+      name: bubble_infrastructure_bubble
+
 services:
   web:
     image: bubble
@@ -25,6 +31,9 @@ services:
       - ./db/:/db/
     ports:
       - "5001:5001"
+    networks:
+      - private
+      - public
 #  redis:
 #    image: redis
   celery:
@@ -34,5 +43,9 @@ services:
       - ./.envs/.local/.flask
     volumes:
       - .:/code
+    networks:
+      - private
+      - public
 #    depends_on:
 #      - redis
+
