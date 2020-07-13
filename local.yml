@@ -36,9 +36,9 @@ services:
       - public
   redis:
     image: redis
-  networks:
-    - private
-    - public
+    networks:
+      - private
+      - public
   celery:
     image: bubble
     command: "celery worker -A bubble.celery_app:app"
