@@ -20,7 +20,7 @@ services:
     #      - CELERY_RESULT_BACKEND_URL=redis://localhost:6379/2
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=infrastructure_bubble"
+      - "traefik.docker.network=bubble_infrastructure_bubble"
       - "traefik.http.services.bubble.loadbalancer.server.port=5001"
       - "traefik.http.routers.bubble.rule=PathPrefix(`/api/v1/bubble`)"
       - "traefik.http.middlewares.bubble.forwardauth.address=http://192.168.112.128/api/v1/user_center/auth/"
