@@ -90,7 +90,7 @@ class CategorySubjectResource(Resource):
     def get(self, _id):
         try:
             schema = SubjectSchema()
-            subject_list = Subject.objects.get(category__id=[_id])
+            subject_list = Subject.objects.get(category__in=[SubjectCategory.objects.get(id=_id)])
             objs, page = Pagination(subject_list).paginate(schema)
             return format_response(objs, 'get subject list success', 200, page=page), 200
         except Exception as e:
