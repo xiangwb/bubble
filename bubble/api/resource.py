@@ -90,15 +90,32 @@ class SubjectResource(Resource):
         schema = SubjectSchema()
         try:
             subject = Subject.objects.get(id=_id)
+            subject.category_show = [category.name for category in subject.category]
             return format_response(schema.dump(Subject), "get subject detail success", 200), 200
         except (mg.DoesNotExist, mg.MultipleObjectsReturned):
             return format_response('', 'subject is not exist', 404), 404
 
     def put(self, _id):
-        pass
+        schema = SubjectSchema()
+        try:
+            subject = Subject.objects.get(id=_id)
+            data = schema.load(request.json)
+            subject.update(**data)
+            subject.reload()
+            subject.category_show = [category.name for category in subject.category]
+            return format_response(schema.dump(Subject), "subject updated", 200), 200
+        except (mg.DoesNotExist, mg.MultipleObjectsReturned):
+            return format_response('', 'subject is not exist', 404), 404
+
 
     def delete(self, _id):
-        pass
+        try:
+            Subject.objects.get(id=_id).delete()
+            # return {"msg": "user deleted"}
+            return format_response('', 'subject  deleted', 200)
+        except (mg.DoesNotExist, mg.MultipleObjectsReturned):
+            # abort(404, {'msg': '用户不存在'})
+            return format_response('', 'subject is not exist', 404)
 
 
 class SubjectListResource(Resource):
