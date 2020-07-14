@@ -93,6 +93,9 @@ class CategorySubjectResource(Resource):
             objs, page = Pagination(subject_list).paginate(schema)
             return format_response(objs, 'get subject list success', 200, page=page), 200
         except Exception as e:
+            import traceback
+            traceback.print_exc()
+            logger.api_logger.error(traceback.format_exc())
             return format_response(e.args, 'get subject list failure', 500), 500
 
 
