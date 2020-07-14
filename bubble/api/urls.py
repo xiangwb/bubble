@@ -10,10 +10,10 @@ from bubble.api.schema import SubjectCategorySchema
 blueprint = Blueprint("api", __name__, url_prefix="/api/v1/bubble")
 api = Api(blueprint)
 
-api.add_resource(SubjectCategoryResource, "/subject-category/<string:_id>/")
-api.add_resource(SubjectCategoryListResource, "/subject-category/")
-api.add_resource(SubjectResource, "/subject/<string:_id>/")
-api.add_resource(SubjectListResource, "/subject/")
+api.add_resource(SubjectCategoryResource, "/subject-categories/<string:_id>/")
+api.add_resource(SubjectCategoryListResource, "/subject-categories/")
+api.add_resource(SubjectResource, "/subjects/<string:_id>/")
+api.add_resource(SubjectListResource, "/subjects/")
 
 
 @blueprint.before_app_first_request
