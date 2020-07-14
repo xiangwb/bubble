@@ -103,7 +103,7 @@ class SubjectResource(Resource):
             subject.update(**data)
             subject.reload()
             subject.category_show = [category.name for category in subject.category]
-            return format_response(schema.dump(Subject), "subject updated", 200), 200
+            return format_response(schema.dump(subject), "subject updated", 200), 200
         except (mg.DoesNotExist, mg.MultipleObjectsReturned):
             return format_response('', 'subject is not exist', 404), 404
 
