@@ -91,7 +91,7 @@ class SubjectResource(Resource):
         try:
             subject = Subject.objects.get(id=_id)
             subject.category_show = [category.name for category in subject.category]
-            return format_response(schema.dump(Subject), "get subject detail success", 200), 200
+            return format_response(schema.dump(subject), "get subject detail success", 200), 200
         except (mg.DoesNotExist, mg.MultipleObjectsReturned):
             return format_response('', 'subject is not exist', 404), 404
 
