@@ -4,7 +4,7 @@ from marshmallow import ValidationError
 
 from bubble.extensions import apispec
 from bubble.api.resource import SubjectCategoryListResource, SubjectCategoryResource, SubjectResource, \
-    SubjectListResource
+    SubjectListResource, CategorySubjectResource
 from bubble.api.schema import SubjectCategorySchema
 
 blueprint = Blueprint("api", __name__, url_prefix="/api/v1/bubble")
@@ -12,6 +12,7 @@ api = Api(blueprint)
 
 api.add_resource(SubjectCategoryResource, "/subject-categories/<string:_id>/")
 api.add_resource(SubjectCategoryListResource, "/subject-categories/")
+api.add_resource(CategorySubjectResource, "/subject-categories/<string:_id>/subjects/")
 api.add_resource(SubjectResource, "/subjects/<string:_id>/")
 api.add_resource(SubjectListResource, "/subjects/")
 

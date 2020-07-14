@@ -81,9 +81,24 @@ class SubjectCategoryListResource(Resource):
             return format_response(e.args, 'server error', 500)
 
 
+class CategorySubjectResource(Resource):
+    """
+    查询某个课程分类下的课程
+    """
+
+    def get(self, _id):
+        try:
+            schema = SubjectSchema()
+            subject_list = Subject.objects.get(category__id=[_id])
+            objs, page = Pagination(subject_list).paginate(schema)
+            return format_response(objs, 'get subject list success', 200, page=page), 200
+        except Exception as e:
+            return format_response(e.args, 'get subject list failure', 500), 500
+
+
 class SubjectResource(Resource):
     """
-    课程接口
+    课程查改删接口
     """
 
     def get(self, _id):
@@ -107,7 +122,6 @@ class SubjectResource(Resource):
         except (mg.DoesNotExist, mg.MultipleObjectsReturned):
             return format_response('', 'subject is not exist', 404), 404
 
-
     def delete(self, _id):
         try:
             Subject.objects.get(id=_id).delete()
@@ -119,6 +133,10 @@ class SubjectResource(Resource):
 
 
 class SubjectListResource(Resource):
+    """
+    课程列表和创建
+    """
+
     def get(self):
         try:
             schema = SubjectSchema(many=True)
