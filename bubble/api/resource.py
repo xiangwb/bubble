@@ -86,6 +86,7 @@ class CategorySubjectResource(Resource):
     查询某个课程分类下的课程
     """
 
+    @pysnooper.snoop()
     def get(self, _id):
         try:
             schema = SubjectSchema()
