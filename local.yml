@@ -23,7 +23,6 @@ services:
       - "traefik.docker.network=bubble_infrastructure_bubble"
       - "traefik.http.services.bubble.loadbalancer.server.port=5001"
       - "traefik.http.routers.bubble.rule=PathPrefix(`/api/v1/bubble`)"
-      - "traefik.http.routers.bubble.rule=PathPrefix(`/admin/`)"
       - "traefik.http.middlewares.bubble.forwardauth.address=http://192.168.112.128/api/v1/user_center/auth/"
       - "traefik.http.middlewares.bubble.forwardauth.authResponseHeaders=X-Auth-User-Id"
       - "traefik.http.routers.bubble.middlewares=bubble@docker"
