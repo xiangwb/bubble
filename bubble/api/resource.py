@@ -227,7 +227,7 @@ class ItemListResource(Resource):
 
     def get(self):
         try:
-            schema = Item(many=True)
+            schema = ItemSchema(many=True)
             item_list = Item.objects.all()
             objs, page = Pagination(item_list).paginate(schema)
             return format_response(objs, 'get item list success', 200, page=page), 200
@@ -245,7 +245,6 @@ class ItemListResource(Resource):
             if not creator_id:
                 return format_response("no response header X-Auth-User-Id", 'server error', 500), 500
             data['creator_id'] = creator_id
-            data['subject'] = Subject.objects.get(id=data['subject'])
             item = Item.objects.create(**data)
             # return {"msg": "user created", "user": schema.dump(user)}, 201
             # subject.category_show = [category.name for category in subject.category]
