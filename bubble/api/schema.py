@@ -25,5 +25,5 @@ class ItemSchema(ma.Schema):
     refer = ma.String()
     tag = ma.List(ma.String, load_only=True)
     tag_show = ma.List(ma.String, dump_only=True)
-    subject = ma.String( load_only=True)
+    subject = ma.String(load_only=True)
     subject_show = ma.String(dump_only=True)
