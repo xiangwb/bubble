@@ -245,11 +245,12 @@ class ItemListResource(Resource):
             if not creator_id:
                 return format_response("no response header X-Auth-User-Id", 'server error', 500), 500
             data['creator_id'] = creator_id
+            data['subject'] = Subject.objects.get(id=data['subject'])
             item = Item.objects.create(**data)
             # return {"msg": "user created", "user": schema.dump(user)}, 201
             # subject.category_show = [category.name for category in subject.category]
             return format_response(schema.dump(item), 'item  created', 201), 201
-        except (marshmallow.exceptions.ValidationError,mongoengine.errors.ValidationError) as e:
+        except (marshmallow.exceptions.ValidationError, mongoengine.errors.ValidationError) as e:
             import traceback
             traceback.print_exc()
             logger.api_logger.error(traceback.format_exc())
