@@ -22,7 +22,7 @@ class ItemSchema(ma.Schema):
     id = ma.String(dump_only=True)
     question = ma.String(required=True)
     answer = ma.String(required=True)
-    refer = ma.String()
+    refer = ma.String(required=False, default='')
     tag = ma.List(ma.String, load_only=True)
     tag_show = ma.List(ma.String, dump_only=True)
     subject = ma.String(load_only=True)
