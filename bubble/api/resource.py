@@ -1,4 +1,5 @@
 import marshmallow
+import mongoengine
 import pysnooper
 from flask import request
 from flask_restful import Resource
@@ -248,11 +249,10 @@ class ItemListResource(Resource):
             # return {"msg": "user created", "user": schema.dump(user)}, 201
             # subject.category_show = [category.name for category in subject.category]
             return format_response(schema.dump(item), 'item  created', 201), 201
-        except marshmallow.exceptions.ValidationError as e:
+        except (marshmallow.exceptions.ValidationError,mongoengine.errors.ValidationError) as e:
             import traceback
             traceback.print_exc()
             logger.api_logger.error(traceback.format_exc())
-            # abort(403, {'msg': '手机号码已存在'})
             return format_response(e.args, 'param error', 400), 400
         except mg.errors.NotUniqueError as e:
             import traceback
