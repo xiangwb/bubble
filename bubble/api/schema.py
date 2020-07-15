@@ -16,3 +16,14 @@ class SubjectSchema(ma.Schema):
     category_show = ma.List(ma.String, dump_only=True)
     name = ma.String(required=True)
     desc = ma.String(required=True)
+
+
+class ItemSchema(ma.Schema):
+    id = ma.String(dump_only=True)
+    question = ma.String(required=True)
+    answer = ma.String(required=True)
+    refer = ma.String()
+    tag = ma.List(ma.String, load_only=True)
+    tag_show = ma.List(ma.String, dump_only=True)
+    subject = ma.String(ma.String, load_only=True)
+    subject_show = ma.String(ma.String, dump_only=True)

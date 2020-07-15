@@ -74,6 +74,7 @@ class Item(CommonDocument):
     refer = mg.StringField(default=True)
     tag = mg.ListField(mg.ReferenceField(Tag))
     subject = mg.ReferenceField(Subject, reverse_delete_rule=mg.CASCADE)
+    creator_id = mg.StringField(required=True)
 
     # __searchable__ = ['username', 'email']  # 定义需要es搜索的字段，不定义则不需要es搜索功能
 
