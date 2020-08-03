@@ -4,7 +4,7 @@ from flask_admin import Admin
 from flask_admin.contrib.mongoengine import ModelView
 from bubble.extensions import db, apispec, logger, celery, limiter
 from bubble.loggers import get_logger
-from bubble.models import Subject, Item, SubjectCategory, Tag
+from bubble.models import Subject, Item, SubjectCategory,Point,PointRelation
 from bubble.request_handler import register_error_handler
 from bubble import api
 
@@ -118,6 +118,7 @@ def init_admin(app=None):
     app = app or create_app()
     admin = Admin(app, name='bubble', template_mode='bootstrap3')
     admin.add_view(ModelView(SubjectCategory))
-    admin.add_view(ModelView(Tag))
+    admin.add_view(ModelView(Point))
+    admin.add_view(ModelView(PointRelation))
     admin.add_view(ModelView(Subject))
     admin.add_view(ModelView(Item))
