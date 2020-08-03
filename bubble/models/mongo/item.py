@@ -51,9 +51,9 @@ class Subject(CommonDocument):
         return "{}".format(self.name)
 
 
-class Tag(CommonDocument):
+class Point(CommonDocument):
     """
-    问题标签
+    问题知识点
     """
     name = mg.StringField(required=True, max_length=100, unique=True)
 
@@ -71,8 +71,8 @@ class Item(CommonDocument):
 
     question = mg.StringField(required=True)
     answer = mg.StringField(required=False)
-    refer = mg.StringField(default=True)
-    tag = mg.ListField(mg.ReferenceField(Tag))
+    refer = mg.StringField(required=True)
+    point = mg.ListField(mg.ReferenceField(Point))
     subject = mg.ReferenceField(Subject, reverse_delete_rule=mg.CASCADE)
     creator_id = mg.StringField(required=True)
 
@@ -80,3 +80,17 @@ class Item(CommonDocument):
 
     def __repr__(self):
         return "<Item %s>" % self.id
+
+
+class PointRelation(CommonDocument):
+    """
+    知识点图谱三元组
+    """
+    subject = mg.ReferenceField(Subject, reverse_delete_rule=mg.CASCADE)
+    p1 = mg.ReferenceField(Point, reverse_delete_rule=mg.CASCADE)
+    relation = mg.StringField(required=True)
+    p2 = mg.ReferenceField(Point, reverse_delete_rule=mg.CASCADE, required=False)
+
+    def __repr__(self):
+        return "<PointRelation {}_{}_{}_{}>".format(self.subject.name, self.p1.name, self.relation,
+                                                    self.p2.name if self.p2 else "None")
