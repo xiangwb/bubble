@@ -58,7 +58,7 @@ class Point(CommonDocument):
     name = mg.StringField(required=True, max_length=100, unique=True)
 
     def __repr__(self):
-        return "<Tag %s>" % self.name
+        return "<Point %s>" % self.name
 
     def __str__(self):
         return "{}".format(self.name)
