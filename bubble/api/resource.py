@@ -7,7 +7,7 @@ import mongoengine as mg
 
 from bubble.commons.pagination import Pagination
 from bubble.extensions import logger
-from bubble.models import SubjectCategory, Subject, Tag, Item
+from bubble.models import SubjectCategory, Subject, Point, Item
 from bubble.api.schema import SubjectCategorySchema, SubjectSchema, ItemSchema
 from bubble.utils.response import format_response
 
