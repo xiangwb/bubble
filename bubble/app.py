@@ -1,10 +1,11 @@
 from flask import Flask
+from flask_cors import CORS
 
 from flask_admin import Admin
 from flask_admin.contrib.mongoengine import ModelView
 from bubble.extensions import db, apispec, logger, celery, limiter
 from bubble.loggers import get_logger
-from bubble.models import Subject, Item, SubjectCategory,Point,PointRelation
+from bubble.models import Subject, Item, SubjectCategory, Point, PointRelation
 from bubble.request_handler import register_error_handler
 from bubble import api
 
@@ -19,7 +20,7 @@ def create_app(testing=False, cli=False):
 
     if testing is True:
         app.config["TESTING"] = True
-
+    enable_cors(app)
     configure_extensions(app, cli)
     configure_apispec(app)
     register_request_handler(app)
@@ -122,3 +123,7 @@ def init_admin(app=None):
     admin.add_view(ModelView(PointRelation))
     admin.add_view(ModelView(Subject))
     admin.add_view(ModelView(Item))
+
+
+def enable_cors(app=None):
+    CORS(app)

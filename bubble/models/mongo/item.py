@@ -90,6 +90,7 @@ class PointRelation(CommonDocument):
     p1 = mg.ReferenceField(Point, reverse_delete_rule=mg.CASCADE)
     relation = mg.StringField(required=True)
     p2 = mg.ReferenceField(Point, reverse_delete_rule=mg.CASCADE, required=False)
+    sequence = mg.IntField(min_value=1)  # 标识序号
 
     def __repr__(self):
         return "<PointRelation {}_{}_{}_{}>".format(self.subject.name, self.p1.name, self.relation,

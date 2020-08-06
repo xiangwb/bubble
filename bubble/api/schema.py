@@ -1,5 +1,4 @@
 from bubble.extensions import ma
-from bubble.models import SubjectCategory, Subject, Point, Item
 
 
 class SubjectCategorySchema(ma.Schema):
@@ -24,6 +23,6 @@ class ItemSchema(ma.Schema):
     answer = ma.String(required=True)
     refer = ma.String(required=False, default='')
     point = ma.List(ma.String, load_only=True)
-    poing_show = ma.List(ma.String, dump_only=True)
+    point_show = ma.List(ma.String, dump_only=True)
     subject = ma.String(load_only=True)
     subject_show = ma.String(dump_only=True)
