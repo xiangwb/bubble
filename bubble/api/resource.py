@@ -54,10 +54,18 @@ class SubjectCategoryListResource(Resource):
 
     def get(self):
         try:
-            schema = SubjectCategorySchema(many=True)
-            subject_category_list = SubjectCategory.objects.all()
-            objs, page = Pagination(subject_category_list).paginate(schema)
-            return format_response(objs, 'get subject category list success', 200, page=page)
+            schema = SubjectCategorySchema()
+            child_schema = SubjectCategorySchema(many=True)
+            subject_category_list = SubjectCategory.objects(path='/')
+            resp = []
+            for subject_category_obj in subject_category_list:
+                path_prefix = '/' + subject_category_obj.name
+                child_subject_list = SubjectCategory.objects(path=path_prefix)
+                subject_category = schema.dump(subject_category_obj)
+                subject_category['children'] = child_schema.dump(child_subject_list)
+                resp.append(subject_category)
+            # objs, page = Pagination(subject_category_list).paginate(schema)
+            return format_response(resp, 'get subject category list success', 200)
         except Exception as e:
             return format_response(e.args, 'get subject category list failure', 500)
 
