@@ -25,3 +25,4 @@ blinker==1.4
 flask-admin==1.5.6
 pysnooper
 flask-cors
+requests
