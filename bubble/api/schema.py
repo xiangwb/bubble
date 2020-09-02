@@ -1,5 +1,8 @@
+import traceback
+
 from bubble.extensions import ma
 from .adapter import get_user
+from bubble.extensions import logger
 
 
 class SubjectCategorySchema(ma.Schema):
@@ -18,9 +21,14 @@ class SubjectSchema(ma.Schema):
     desc = ma.String(required=True)
 
     def get_creator(self, obj):
-        creator_id = obj.creator_id
-        user = get_user(creator_id)
-        return user
+        try:
+            creator_id = obj.creator_id
+            user = get_user(creator_id)
+            return user
+        except Exception:
+            traceback.print_exc()
+            logger.api_logger.error(traceback.format_exc())
+
 
 
 class ItemSchema(ma.Schema):
