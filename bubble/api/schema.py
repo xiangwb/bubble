@@ -1,4 +1,5 @@
 from bubble.extensions import ma
+from .adapter import get_user
 
 
 class SubjectCategorySchema(ma.Schema):
@@ -10,11 +11,16 @@ class SubjectCategorySchema(ma.Schema):
 
 class SubjectSchema(ma.Schema):
     id = ma.String(dump_only=True)
-    creator_id = ma.String(dump_only=True)
+    creator = ma.Method('get_creator', dump_only=True)
     category = ma.List(ma.String, load_only=True)
     category_show = ma.List(ma.String, dump_only=True)
     name = ma.String(required=True)
     desc = ma.String(required=True)
+
+    def get_creator(self, obj):
+        creator_id = obj.creator_id
+        user = get_user(creator_id)
+        return user
 
 
 class ItemSchema(ma.Schema):
