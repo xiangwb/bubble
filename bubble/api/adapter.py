@@ -6,7 +6,7 @@ def get_user(user_id: str) -> dict:
     url = USER_CENTER_URL + '/api/v1/user_center/internal/users/' + user_id
     headers = {"Content-Type": "application/json"}
     timeout = 60
-    response = requests.get(url,headers=headers,timeout=timeout).json()
+    response = requests.get(url, headers=headers, timeout=timeout).json()
     code = response.get('code')
     if code != 200:
         raise Exception("Not Found")

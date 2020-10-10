@@ -5,10 +5,11 @@ from flask import request
 from flask_restful import Resource
 import mongoengine as mg
 
+from bubble.api.utils import get_next_item_id
 from bubble.commons.pagination import Pagination
 from bubble.extensions import logger
 from bubble.models import SubjectCategory, Subject, Point, Item
-from bubble.api.schema import SubjectCategorySchema, SubjectSchema, ItemSchema
+from bubble.api.schema import SubjectCategorySchema, SubjectSchema, ItemSchema, PointSchema
 from bubble.utils.response import format_response
 
 
@@ -159,7 +160,6 @@ class SubjectListResource(Resource):
         except Exception as e:
             return format_response(e.args, 'get subject list failure', 500), 500
 
-    @pysnooper.snoop()
     def post(self):
         try:
             schema = SubjectSchema()
@@ -268,6 +268,79 @@ class ItemListResource(Resource):
             logger.api_logger.error(traceback.format_exc())
             # abort(403, {'msg': '手机号码已存在'})
             return format_response(e.args, 'item exists', 400), 400
+        except Exception as e:
+            # abort(500, {"msg": e.args})
+            import traceback
+            traceback.print_exc()
+            logger.api_logger.error(traceback.format_exc())
+            return format_response(e.args, 'server error', 500), 500
+
+
+class PointResource(Resource):
+    """
+    课程知识点的创建和列表
+    """
+
+    def get(self):
+        try:
+            schema = PointSchema(many=True)
+            subject_id = request.args.get('subject_id','')
+            if not subject_id:
+                return format_response('parameter subject_id missing','get point list failure',400)
+            point_list = Point.object(subject_id=subject_id)
+            objs, page = Pagination(point_list).paginate(schema)
+            return format_response(objs, 'get point list success', 200, page=page), 200
+        except Exception as e:
+            return format_response(e.args, 'get point list failure', 500), 500
+
+
+    def post(self):
+        try:
+            schema = PointSchema()
+            data = schema.load(request.json)
+            item = Point.objects.create(**data)
+            # return {"msg": "user created", "user": schema.dump(user)}, 201
+            # subject.category_show = [category.name for category in subject.category]
+            return format_response(schema.dump(item), 'point  created', 201), 201
+        except (marshmallow.exceptions.ValidationError, mongoengine.errors.ValidationError) as e:
+            import traceback
+            traceback.print_exc()
+            logger.api_logger.error(traceback.format_exc())
+            return format_response(e.args, 'param error', 400), 400
+        except mg.errors.NotUniqueError as e:
+            import traceback
+            traceback.print_exc()
+            logger.api_logger.error(traceback.format_exc())
+            # abort(403, {'msg': '手机号码已存在'})
+            return format_response(e.args, 'point in the subject exists', 400), 400
+        except Exception as e:
+            # abort(500, {"msg": e.args})
+            import traceback
+            traceback.print_exc()
+            logger.api_logger.error(traceback.format_exc())
+            return format_response(e.args, 'server error', 500), 500
+
+
+class ItemGetterResource(Resource):
+    """
+    获取下一条需要学习的条目
+    """
+
+    def post(self):
+        try:
+            data = request.json
+            headers = request.headers
+            user_id = headers.get('X-Auth-User-Id')
+            if not user_id:
+                return format_response("no response header X-Auth-User-Id", 'server error', 500), 500
+            item_id = data.get('item_id')
+            item = Item.objects.get(id=item_id)
+            subject = item.subject
+            if item_id:
+                answer = data.get('answer')
+                item_id = get_next_item_id(user_id=user_id, subject_id=subject, item_id=item, answer=answer)
+            else:
+                item_id = get_next_item_id(user_id=user_id, subject_id=subject, item_id=None, answer=None)
         except Exception as e:
             # abort(500, {"msg": e.args})
             import traceback

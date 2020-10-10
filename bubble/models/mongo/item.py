@@ -56,15 +56,20 @@ class Subject(CommonDocument):
 
 class Point(CommonDocument):
     """
-    问题知识点
+    课程知识点
     """
+    subject_id = mg.StringField(required=True)
     name = mg.StringField(required=True, max_length=100, unique=True)
 
     def __repr__(self):
-        return "<Point %s>" % self.name
+        return "<Point %s_%s>" % (self.subject_id, self.name)
 
     def __str__(self):
         return "{}".format(self.name)
+
+    meta = {
+        'indexes': [{'fields': ['subject_id', 'name'], 'unique': True}, ]
+    }
 
 
 class Item(CommonDocument):
@@ -78,6 +83,7 @@ class Item(CommonDocument):
     point = mg.ListField(mg.ReferenceField(Point))
     subject = mg.ReferenceField(Subject, reverse_delete_rule=mg.CASCADE)
     creator_id = mg.StringField(required=True)
+    sequence = mg.IntField(min_value=1, default=1)
 
     # __searchable__ = ['username', 'email']  # 定义需要es搜索的字段，不定义则不需要es搜索功能
 
@@ -89,12 +95,34 @@ class PointRelation(CommonDocument):
     """
     知识点图谱三元组
     """
-    subject = mg.ReferenceField(Subject, reverse_delete_rule=mg.CASCADE)
-    p1 = mg.ReferenceField(Point, reverse_delete_rule=mg.CASCADE)
-    relation = mg.StringField(required=True)
-    p2 = mg.ReferenceField(Point, reverse_delete_rule=mg.CASCADE, required=False)
-    sequence = mg.IntField(min_value=1)  # 标识序号
+    subject = mg.ReferenceField(Subject, reverse_delete_rule=mg.CASCADE)  # 关联课程
+    n1_type = mg.StringField(required=True, choices=('subject', 'point'))  # 节点1定义，节点1只能是point
+    n1_id = mg.StringField(required=True)  # 节点2id
+    relation = mg.StringField(required=True)  # 节点间关系
+    n2_type = mg.StringField(required=True, choices=('point', 'item'))  # 节点2类型,如果节点1的类型为subject，那么节点2的类型只能是point
+    n2_id = mg.StringField(required=True)  # 节点2id
+    sequence = mg.IntField(min_value=1, default=1)  # 标识序号
 
     def __repr__(self):
-        return "<PointRelation {}_{}_{}_{}>".format(self.subject.name, self.p1.name, self.relation,
-                                                    self.p2.name if self.p2 else "None")
+        return "<PointRelation {}_{}_{}_{}>".format(self.subject.name, self.n1_id, self.relation,
+                                                    self.n2_id)
+
+
+class UserSubject(CommonDocument):
+    """
+    用户课程情况
+    detail数据结构：
+    {
+        "points":{
+        },
+        "items":{
+        },
+        "latest":{"item_id":"a1d323brd","answer":1}
+    }
+    """
+    user_id = mg.StringField(required=True)  # 用户ID
+    subject_id = mg.ReferenceField(Subject, reverse_delete_rule=mg.CASCADE)
+    detail = mg.DictField(required=True)  # 知识点掌握情况
+
+    def __repr__(self):
+        return "<UserItem {}".format(self.user_id)

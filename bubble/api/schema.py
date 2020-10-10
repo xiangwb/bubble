@@ -30,7 +30,6 @@ class SubjectSchema(ma.Schema):
             logger.api_logger.error(traceback.format_exc())
 
 
-
 class ItemSchema(ma.Schema):
     id = ma.String(dump_only=True)
     question = ma.String(required=True)
@@ -40,3 +39,8 @@ class ItemSchema(ma.Schema):
     point_show = ma.List(ma.String, dump_only=True)
     subject = ma.String(load_only=True)
     subject_show = ma.String(dump_only=True)
+
+
+class PointSchema(ma.Schema):
+    subject_id = ma.String(dump_only=True,required=True)
+    name = ma.String(required=True)
