@@ -287,7 +287,7 @@ class PointResource(Resource):
             subject_id = request.args.get('subject_id','')
             if not subject_id:
                 return format_response('parameter subject_id missing','get point list failure',400)
-            point_list = Point.object(subject_id=subject_id)
+            point_list = Point.objects(subject_id=subject_id)
             objs, page = Pagination(point_list).paginate(schema)
             return format_response(objs, 'get point list success', 200, page=page), 200
         except Exception as e:
