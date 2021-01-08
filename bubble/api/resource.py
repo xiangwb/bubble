@@ -8,8 +8,8 @@ import mongoengine as mg
 from bubble.api.utils import get_next_item_id
 from bubble.commons.pagination import Pagination
 from bubble.extensions import logger
-from bubble.models import SubjectCategory, Subject, Point, Item
-from bubble.api.schema import SubjectCategorySchema, SubjectSchema, ItemSchema, PointSchema
+from bubble.models import SubjectCategory, Subject, Point, Item, PointRelation
+from bubble.api.schema import SubjectCategorySchema, SubjectSchema, ItemSchema, PointSchema, PointRelationSchema
 from bubble.utils.response import format_response
 
 
@@ -284,15 +284,14 @@ class PointResource(Resource):
     def get(self):
         try:
             schema = PointSchema(many=True)
-            subject_id = request.args.get('subject_id','')
+            subject_id = request.args.get('subject_id', '')
             if not subject_id:
-                return format_response('parameter subject_id missing','get point list failure',400)
+                return format_response('parameter subject_id missing', 'get point list failure', 400)
             point_list = Point.objects(subject_id=subject_id)
             objs, page = Pagination(point_list).paginate(schema)
             return format_response(objs, 'get point list success', 200, page=page), 200
         except Exception as e:
             return format_response(e.args, 'get point list failure', 500), 500
-
 
     def post(self):
         try:
@@ -313,6 +312,63 @@ class PointResource(Resource):
             logger.api_logger.error(traceback.format_exc())
             # abort(403, {'msg': '手机号码已存在'})
             return format_response(e.args, 'point in the subject exists', 400), 400
+        except Exception as e:
+            # abort(500, {"msg": e.args})
+            import traceback
+            traceback.print_exc()
+            logger.api_logger.error(traceback.format_exc())
+            return format_response(e.args, 'server error', 500), 500
+
+
+class PointRelationResource(Resource):
+    """
+    知识图谱的获取、修改
+    """
+
+    def get(self, _id):
+        try:
+            schema = PointRelationSchema()
+            relation = PointRelation.objects.get(id=_id)
+            return format_response(schema.dump(relation), "get point relation detail success", 200), 200
+        except (mg.DoesNotExist, mg.MultipleObjectsReturned):
+            return format_response('', 'point relation is not exist', 404), 404
+
+    def put(self, _id):
+        schema = PointRelationSchema()
+        try:
+            relation = PointRelation.objects.get(id=_id)
+            data = schema.load(request.json)
+            relation.update(**data)
+            relation.reload()
+            return format_response(schema.dump(relation), "point relation updated", 200), 200
+        except (mg.DoesNotExist, mg.MultipleObjectsReturned):
+            return format_response('', 'relation point is not exist', 404), 404
+
+
+class PointRelationListResource(Resource):
+    """
+    知识图谱的创建
+    """
+
+    def post(self):
+        try:
+            schema = PointRelationSchema()
+            data = schema.load(request.json)
+            item = PointRelation.objects.create(**data)
+            # return {"msg": "user created", "user": schema.dump(user)}, 201
+            # subject.category_show = [category.name for category in subject.category]
+            return format_response(schema.dump(item), 'point relation created', 201), 201
+        except (marshmallow.exceptions.ValidationError, mongoengine.errors.ValidationError) as e:
+            import traceback
+            traceback.print_exc()
+            logger.api_logger.error(traceback.format_exc())
+            return format_response(e.args, 'param error', 400), 400
+        except mg.errors.NotUniqueError as e:
+            import traceback
+            traceback.print_exc()
+            logger.api_logger.error(traceback.format_exc())
+            # abort(403, {'msg': '手机号码已存在'})
+            return format_response(e.args, 'point relation exists', 400), 400
         except Exception as e:
             # abort(500, {"msg": e.args})
             import traceback

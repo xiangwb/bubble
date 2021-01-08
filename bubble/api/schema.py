@@ -44,3 +44,8 @@ class ItemSchema(ma.Schema):
 class PointSchema(ma.Schema):
     subject_id = ma.String(load_only=True,required=True)
     name = ma.String(required=True)
+
+
+class PointRelationSchema(ma.Schema):
+    subject_id = ma.String(required=True)
+    graph = ma.Dict(required=True)

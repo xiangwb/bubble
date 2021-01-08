@@ -94,18 +94,23 @@ class Item(CommonDocument):
 class PointRelation(CommonDocument):
     """
     知识点图谱三元组
+    graph的数据结构
+    【
+        {id:1234,,contains:[{"id":1234,"contains":[{"id":"3344"}]},
+        {...}
+    】
     """
-    subject = mg.ReferenceField(Subject, reverse_delete_rule=mg.CASCADE)  # 关联课程
-    n1_type = mg.StringField(required=True, choices=('subject', 'point'))  # 节点1定义，节点1只能是point
-    n1_id = mg.StringField(required=True)  # 节点2id
-    relation = mg.StringField(required=True)  # 节点间关系
-    n2_type = mg.StringField(required=True, choices=('point', 'item'))  # 节点2类型,如果节点1的类型为subject，那么节点2的类型只能是point
-    n2_id = mg.StringField(required=True)  # 节点2id
-    sequence = mg.IntField(min_value=1, default=1)  # 标识序号
+    subject = mg.ReferenceField(Subject, reverse_delete_rule=mg.CASCADE, unique=True)  # 关联课程
+    # n1_type = mg.StringField(required=True, choices=('subject', 'point'))  # 节点1定义，节点1只能是point
+    # n1_id = mg.StringField(required=True)  # 节点2id
+    # relation = mg.StringField(required=True, choices=['contains', ])  # 节点间关系
+    # n2_type = mg.StringField(required=True, choices=('point', 'item'))  # 节点2类型,如果节点1的类型为subject，那么节点2的类型只能是point
+    # n2_id = mg.StringField(required=True)  # 节点2id
+    # sequence = mg.IntField(min_value=1, default=1)  # 标识序号
+    graph = mg.ListField(required=True)
 
     def __repr__(self):
-        return "<PointRelation {}_{}_{}_{}>".format(self.subject.name, self.n1_id, self.relation,
-                                                    self.n2_id)
+        return "<PointRelation {}>".format(self.subject.nam)
 
 
 class UserSubject(CommonDocument):
