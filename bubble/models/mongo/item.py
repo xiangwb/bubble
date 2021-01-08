@@ -107,10 +107,10 @@ class PointRelation(CommonDocument):
     # n2_type = mg.StringField(required=True, choices=('point', 'item'))  # 节点2类型,如果节点1的类型为subject，那么节点2的类型只能是point
     # n2_id = mg.StringField(required=True)  # 节点2id
     # sequence = mg.IntField(min_value=1, default=1)  # 标识序号
-    graph = mg.ListField(required=True)
+    graph = mg.DictField(required=True)
 
     def __repr__(self):
-        return "<PointRelation {}>".format(self.subject.nam)
+        return "<PointRelation {}>".format(self.subject.name)
 
 
 class UserSubject(CommonDocument):
